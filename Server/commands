@@ -1,0 +1,17 @@
+npm init
+
+npm install express
+
+node app      //to run
+
+npm nodemon install -g // chagnes in the server can be gained 
+
+nodemon app   // to run within or without changes
+
+lsof -n -i:5000
+
+kill -9 <PID>
+
+
+
+npx create-react-app client
