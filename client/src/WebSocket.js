@@ -11,7 +11,7 @@ export { WebSocketContext }
 export default ({ children }) => {
     let ws;
     const [socket, setSocket] = useState(null)
-     const setupSocket =  (token) => {
+    const setupSocket =  (token) => {
         
         //const token = localStorage.getItem("jwt")
         if (token && !socket) {

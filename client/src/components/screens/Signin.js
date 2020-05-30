@@ -4,6 +4,8 @@ import {Link, useHistory} from 'react-router-dom'
 import {userContext} from '../../App'
 import {WebSocketContext} from '../../WebSocket'
 import makeToast from '../../Toaster'
+
+
 const SignIn = () => {
 
     const {state,dispatch} = useContext(userContext)
@@ -42,7 +44,7 @@ const SignIn = () => {
                 
                 makeToast("success","Signed in successfully")
                 history.push("/")
-                 ws.setupSocket(data.token)
+                //ws.setupSocket(data.token)
             }
         }).catch(err=>{
             console.log(err)

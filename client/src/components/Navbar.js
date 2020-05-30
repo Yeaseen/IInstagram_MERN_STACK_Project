@@ -3,7 +3,6 @@ import { Link, useHistory } from 'react-router-dom'
 import { userContext } from '../App'
 
 import { WebSocketContext } from '../WebSocket'
-import makeToast from '../Toaster'
 
 const NavBar = () => {
     const history = useHistory()
@@ -23,8 +22,7 @@ const NavBar = () => {
                             localStorage.clear()
                             dispatch({ type: "CLEAR" })
                             history.push("/signin")
-                            ws.socket.disconnect()
-
+                            //if(ws.socket){ws.socket.disconnect()}
                         }}
                     >
                         Logout
@@ -36,7 +34,6 @@ const NavBar = () => {
         else {
             return [
                 <li><Link to="/signin">
-
                     Signin</Link></li>,
                 <li><Link to="/signup">Signup</Link></li>
             ]

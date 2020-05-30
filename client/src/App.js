@@ -25,12 +25,6 @@ export const userContext = createContext()
 const Routing = (props) => {
     const history = useHistory()
     const { state, dispatch } = useContext(userContext)
-
-    
-
-
-
-
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"))
         //console.log(typeof(user),user)
@@ -80,7 +74,7 @@ const Routing = (props) => {
                 <ChatDashboard />
             </Route>
 
-            <Route path="/chatroompage/:id" >
+            <Route path="/chatroompage/:chatroomId" >
                 <ChatRoomPage />
             </Route>
 
