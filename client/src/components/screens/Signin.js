@@ -1,11 +1,13 @@
 import React,{useState,useContext} from 'react'
 import {Link, useHistory} from 'react-router-dom'
-import M from 'materialize-css'
-import {userContext} from '../../App'
 
+import {userContext} from '../../App'
+import {WebSocketContext} from '../../WebSocket'
+import makeToast from '../../Toaster'
 const SignIn = () => {
 
     const {state,dispatch} = useContext(userContext)
+    const ws = useContext(WebSocketContext)
     const history = useHistory()
     const [password,setPassword] = useState("")
     const [email,setEmail] = useState("")
@@ -13,7 +15,8 @@ const SignIn = () => {
     const PostData =()=>{
 
         if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
-            M.toast({html: "Invalid Email",classes: "#c62828 red darken-3"})
+            
+            makeToast("error","Invalid email or password")
             return
         }
         fetch("/signin",{
@@ -29,14 +32,17 @@ const SignIn = () => {
         .then(data=>{
             //console.log(data)
             if(data.error){
-                M.toast({html: data.error,classes: "#c62828 red darken-3"})
+                
+                makeToast("error",data.error)
             }
             else{
                 localStorage.setItem("jwt",data.token)
                 localStorage.setItem("user",JSON.stringify(data.user))
                 dispatch({type:"USER", payload:data.user})
-                M.toast({html:"Signed in successfully",classes: "#43a047 green darken-1"})
+                
+                makeToast("success","Signed in successfully")
                 history.push("/")
+                 ws.setupSocket(data.token)
             }
         }).catch(err=>{
             console.log(err)

@@ -47,7 +47,7 @@ a {
 }
 
 #toast-container{
-    top: 30px !important;
+    top: 60px !important;
     right: 20px !important;
     left: auto !important;
 }
@@ -56,3 +56,83 @@ a {
     cursor: pointer;
 
 }
+
+.chatcard {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    padding: 1rem;
+    position: relative;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 25vw;
+    transform: translate(-50%, -50%);
+  }
+  
+  .chatcardHeader {
+    background: #1686f0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    transform: skewY(-4deg);
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    top: -1rem;
+    left: -0.75rem;
+  }
+  
+  .chatcardBody {
+    margin-top: 2rem;
+  }
+
+  .chatinputGroup {
+    margin-bottom: 1rem;
+  }
+
+
+
+  .chatlabel {
+    font-size: 0.9rem;
+    color: black;
+  }
+  
+  .chatinput {
+    border: none;
+    padding: 0.5rem 0.1rem;
+    width: 100%;
+    border-radius: 2px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.5s;
+  }
+  
+  .chatinput:focus {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .chatbutton {
+    background: #1686f0;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    width: 100%;
+    text-transform: uppercase;
+  }
+  
+  .chatrooms {
+    margin-top: 1rem;
+  }
+  
+  .chatroom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .join {
+    background: #1686f0;
+    padding: 0.25rem 1rem;
+    border-radius: 2px;
+  }
