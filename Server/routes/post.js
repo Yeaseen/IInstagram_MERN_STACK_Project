@@ -5,6 +5,14 @@ mongoose.set('useFindAndModify', false);
 const requireLogin = require('../middleWare/requireLogin')
 const Post = mongoose.model("Post")
 const User = mongoose.model("User")
+const cloudinary = require('cloudinary');
+require("dotenv").config()
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+});
 
 router.get('/allpost', requireLogin, (req, res) => {
     Post.find()
@@ -141,6 +149,7 @@ router.put('/comment', requireLogin, (req, res) => {
 
 
 router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
+
     Post.findOne({_id:req.params.postId})
     .populate("postedBy","_id")
     .exec((err, post)=>{
@@ -148,13 +157,19 @@ router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
             return res.status(422).json({ error: err })
         }
         if(post.postedBy._id.toString() === req.user._id.toString()){
-            
-                post.remove()
-                .then(result=>{
-                    res.json(result)
-                }).catch(err=>{
-                    console.log(err)
-                })
+                
+                const fullURL = post.photo
+                const shortenURL = fullURL.split("/").pop().split('.')[0]
+                
+                cloudinary.v2.uploader.destroy(shortenURL,resource_type='image', (error,result)=>{
+                    //console.log(result,error)
+                    post.remove()
+                    .then(result=>{
+                        res.json(result)
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                })   
         }
     })
 })

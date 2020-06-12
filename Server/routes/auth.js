@@ -5,7 +5,7 @@ const User = mongoose.model("User")
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-//const {JWT_SECRET} = require('../key')
+
 require("dotenv").config()
 const requireLogin = require('../middleWare/requireLogin')
 

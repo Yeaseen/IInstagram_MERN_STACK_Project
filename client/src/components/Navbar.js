@@ -5,6 +5,7 @@ import { userContext } from '../App'
 import { WebSocketContext } from '../WebSocket'
 
 const NavBar = () => {
+    
     const history = useHistory()
     const { state, dispatch } = useContext(userContext)
     const ws = useContext(WebSocketContext)
