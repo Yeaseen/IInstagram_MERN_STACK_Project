@@ -2,14 +2,14 @@ import React,{useState,useContext} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 
 import {userContext} from '../../App'
-import {WebSocketContext} from '../../WebSocket'
+//import {WebSocketContext} from '../../WebSocket'
 import makeToast from '../../Toaster'
 
 
 const SignIn = () => {
 
     const {state,dispatch} = useContext(userContext)
-    const ws = useContext(WebSocketContext)
+    //const ws = useContext(WebSocketContext)
     const history = useHistory()
     const [password,setPassword] = useState("")
     const [email,setEmail] = useState("")

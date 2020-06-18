@@ -1,8 +1,8 @@
-import React, { useEffect, createContext, useReducer, useContext, useState } from 'react'
+import React, { useEffect, createContext, useReducer, useContext } from 'react'
 import WebSocketProvider, { WebSocketContext } from './WebSocket';
 import NavBar from './components/Navbar'
 import "./App.css"
-import { BrowserRouter, Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, useHistory, useLocation, Redirect } from 'react-router-dom'
 import Home from './components/screens/Home'
 import Profile from './components/screens/Profile'
 import SignIn from './components/screens/Signin'
@@ -18,10 +18,6 @@ import { reducer, initialState } from './reducers/userReducer'
 export const userContext = createContext()
 
 
-
-
-
-
 const Routing = (props) => {
     const history = useHistory()
     const location = useLocation()
@@ -31,14 +27,11 @@ const Routing = (props) => {
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"))
         //console.log(typeof(user),user)
-
+        //console.log(location.pathname);
         if (user) {
             dispatch({ type: "USER", payload: user })
-            console.log(location.pathname);
+
         }
-        // else if(state && location.pathname=="/signin"){
-        //     history.push('/')
-        // }
         else {
             history.push('/signin')
             //console.log(location.pathname);
@@ -47,63 +40,65 @@ const Routing = (props) => {
 
     }, [])
 
+
     return (
         <Switch>
             <Route exact path="/" >
                 <Home />
             </Route>
 
-            <Route path="/signin" >
-                <SignIn />
+            <Route exact path="/signin" >
+                {(state && location.pathname == "/signin")
+                    ? history.push('/')
+                    : <SignIn />}
             </Route>
 
-            <Route path="/signup" >
-                <SignUp />
+
+
+            <Route exact path="/signup" >
+                {(state && location.pathname == "/signup")
+                    ? history.push('/')
+                    : <SignUp />}
             </Route>
 
             <Route exact path="/profile" >
                 <Profile />
             </Route>
 
-            <Route path="/createpost" >
+            <Route exact path="/createpost" >
                 <CreatePost />
             </Route>
 
-            <Route path="/profile/:userid" >
+            <Route exact path="/profile/:userid" >
                 <UserProfile />
             </Route>
 
-            <Route path="/myfollowingposts" >
+            <Route exact path="/myfollowingposts" >
                 <SubscribedUserPosts />
             </Route>
 
-            <Route path="/chatdashboard" >
+            <Route exact path="/chatdashboard" >
                 <ChatDashboard />
             </Route>
 
-            <Route path="/chatroompage/:chatroomId" >
+            <Route exact path="/chatroompage/:chatroomId" >
                 <ChatRoomPage />
             </Route>
 
-
-
         </Switch>
-
     )
-
 }
 
 function App() {
     const [state, dispatch] = useReducer(reducer, initialState)
-
-
+    
     return (
         <userContext.Provider value={{ state, dispatch }}>
-            <WebSocketProvider>
+            <WebSocketProvider >
 
                 <BrowserRouter>
                     <NavBar />
-                    <Routing />
+                    <Routing  />
                 </BrowserRouter>
 
             </WebSocketProvider>

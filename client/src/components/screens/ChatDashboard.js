@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { userContext } from '../../App'
 import { Link } from 'react-router-dom'
+
+//import {WebSocketContext} from '../../WebSocket'
+
+
+
 
 const ChatDashboard = () => {
     const [chatrooms, setChatrooms] = useState([])
-
+    
+   
     const getChatrooms = () => {
 
         fetch('/chatdashboard', {
@@ -14,7 +19,7 @@ const ChatDashboard = () => {
             }
         }).then(res => res.json())
             .then(result => {
-                console.log(result.chatrooms)
+                //console.log(result.chatrooms)
                 setChatrooms(result.chatrooms)
             })
             .catch((err) => {
@@ -22,10 +27,21 @@ const ChatDashboard = () => {
             })
 
     }
-
-    useEffect(() => {
+  
+       
+    useEffect( () => {
+        const token = localStorage.getItem("jwt")
+    
+       
         getChatrooms()
+
+
+        return () => {
+            
+            console.log('unmounting...')
+        }
         // eslint-disable-next-line
+        
     }, [])
 
     return (
@@ -59,13 +75,7 @@ const ChatDashboard = () => {
 
                 })
                 }
-
-
             </div>
-
-
-
-
         </div>
     )
 

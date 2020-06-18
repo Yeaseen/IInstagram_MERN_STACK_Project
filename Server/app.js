@@ -7,14 +7,14 @@ const PORT = 5000
 //const {MONGOURI} = require('./key')
 require("dotenv").config()
 
-mongoose.connect(process.env.MONGOURI,{
+mongoose.connect(process.env.MONGOURI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
 })
-mongoose.connection.on('connected', ()=>{
+mongoose.connection.on('connected', () => {
 	console.log("Connected to mongodb !!")
 })
-mongoose.connection.on('error', (err)=>{
+mongoose.connection.on('error', (err) => {
 	console.log("err connecting", err)
 })
 
@@ -27,7 +27,7 @@ require('./models/message')
 
 
 app.use(express.json())
-app.use(express.urlencoded({ extended:true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
 app.use(require('./routes/user'))
@@ -36,8 +36,8 @@ app.use(require('./routes/chat'))
 
 
 
-const server = app.listen(PORT,()=>{
-	console.log("Server is running on",PORT)
+const server = app.listen(PORT, () => {
+	console.log("Server is running on", PORT)
 })
 
 
@@ -48,56 +48,61 @@ require("dotenv").config()
 const Message = mongoose.model("Message")
 const User = mongoose.model("User")
 
-io.use(async (socket,next)=>{
-	try {
-		const token = socket.handshake.query.token;
-		const payload = await jwt.verify(token, process.env.JWT_SECRET);
-		const {_id} = payload
+io.use(async (socket, next) => {
+
+	const token = socket.handshake.query.token;
+
+	jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+		if (err) {
+			return new Error('authentication error');
+		}
+		const { _id } = payload
 		socket.userId = _id;
-		next();
-	  } catch (err) {}
-	
+
+	})
+	next();
+
 })
 
 
-io.on('connection',(socket)=>{
+io.on('connection', (socket) => {
 	console.log("Connected" + socket.userId)
 
 	socket.on("disconnect", () => {
 		console.log("Disconnected: " + socket.userId);
-	  })
-
-	socket.on("joinRoom",({chatroomId})=>{
-		socket.join(chatroomId)
-		console.log("A user joined chatroom "+chatroomId)
 	})
 
-	socket.on("leaveRoom",({chatroomId})=>{
+	socket.on("joinRoom", ({ chatroomId }) => {
 		socket.join(chatroomId)
-		console.log("A user left chatroom "+chatroomId)
+		console.log("A user joined chatroom " + chatroomId)
 	})
 
-	socket.on("chatroomMessage", async ({chatroomId, message})=>{
-    if(message.trim().length > 0 ){
+	socket.on("leaveRoom", ({ chatroomId }) => {
+		socket.join(chatroomId)
+		console.log("A user left chatroom " + chatroomId)
+	})
 
-		const user = await User.findOne({_id:socket.userId})
+	socket.on("chatroomMessage", async ({ chatroomId, message }) => {
+		if (message.trim().length > 0) {
 
-		const newMessage = new Message({
-			chatroom:chatroomId,
-			user:socket.userId,
-			message
-		})
+			const user = await User.findOne({ _id: socket.userId })
 
-		io.to(chatroomId).emit("newMessage",{
-			message,
-			name:user.name,
-			userId: socket.userId
-		})
+			const newMessage = new Message({
+				chatroom: chatroomId,
+				user: socket.userId,
+				message
+			})
 
-		await newMessage.save()
-	}
+			io.to(chatroomId).emit("newMessage", {
+				message,
+				name: user.name,
+				userId: socket.userId
+			})
 
-		
+			await newMessage.save()
+		}
+
+
 	})
 
 

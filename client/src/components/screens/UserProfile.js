@@ -72,7 +72,7 @@ const UserProfile = () => {
                     }}>
                         <div>
                             <img style={{ width: "160px", height: "160px", borderRadius: "80px" }}
-                                src="https://images.unsplash.com/flagged/photo-1578894238942-d3b78cef5c0c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                                src={userProfile.user.pic}
                             />
                         </div>
                         <div>

@@ -147,18 +147,25 @@ const Home = () => {
                     return (
                         <div className="card home-card" key={item._id}>
 
-                            <h5 style={{padding:"5px"}}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
-                                {item.postedBy.name}
+                            <h4 style={{ padding: "5px" }}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+
+
+
+                                <img style={{ verticalAlign: "middle" }} src={item.postedBy.pic} />
+                                <span style={{ verticalAlign: "middle" }}>
+                                    {item.postedBy.name}
+                                </span>
+
                             </Link>
                                 {item.postedBy._id == state._id
 
                                     && <i className="material-icons"
-                                        style={{ float: "right", color:"red" }}
+                                        style={{ float: "right", color: "red" }}
                                         onClick={() => { deletePost(item._id) }}
                                     >delete</i>
 
                                 }
-                            </h5>
+                            </h4>
                             <div className="card-image">
                                 <img src={item.photo} />
                             </div>
@@ -183,6 +190,8 @@ const Home = () => {
                                 <h6>{item.title}</h6>
 
                                 <p>{item.body}</p>
+
+
 
                                 {
                                     item.comments.map(record => {

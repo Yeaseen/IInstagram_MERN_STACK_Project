@@ -8,7 +8,7 @@ const NavBar = () => {
     
     const history = useHistory()
     const { state, dispatch } = useContext(userContext)
-    const ws = useContext(WebSocketContext)
+    //const ws = useContext(WebSocketContext)
 
     const renderList = (() => {
         if (state) {
@@ -16,7 +16,7 @@ const NavBar = () => {
                 <li><Link to="/profile">Profile</Link></li>,
                 <li><Link to="/createpost">Createpost</Link></li>,
                 <li><Link to="/myfollowingposts">MyFollowingPosts</Link></li>,
-                <li><Link to="/chatdashboard">ChatDashboard</Link></li>,
+                //<li><Link to="/chatdashboard">ChatDashboard</Link></li>,
                 <li>
                     <button className="btn #c62828 red darken-3"
                         onClick={() => {

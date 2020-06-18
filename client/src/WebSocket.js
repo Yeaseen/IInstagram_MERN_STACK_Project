@@ -10,14 +10,16 @@ export { WebSocketContext }
 
 export default ({ children }) => {
     let ws;
+
     const [socket, setSocket] = useState(null)
-    const setupSocket =  (token) => {
+   
+    const setupSocket = (token) => {
         
         //const token = localStorage.getItem("jwt")
         if (token && !socket) {
             const newSocket = io('localhost:5000', {
                 query: {
-                    token: localStorage.getItem("jwt"),
+                    token,
                 }
             })
 
@@ -29,13 +31,12 @@ export default ({ children }) => {
 
             newSocket.on("connect", ()=>{
                 makeToast("success", "Socket Connected!!!")
-                console.log("socket connected in client side")
-            })
+                console.log(newSocket)
 
+            })
             setSocket(newSocket)
         }
     }
-
 
     ws = {
         socket,
