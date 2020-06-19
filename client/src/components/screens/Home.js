@@ -140,27 +140,7 @@ const Home = () => {
             })
     }
 
-    // {<h5 style={{ padding: "5px" }}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
 
-    // <img style={{
-    //     height: "30px",
-    //     width: "30px",
-    //     borderRadius: "15px",
-    //     verticalAlign: "middle"
-    // }} src={item.postedBy.pic} />
-    // <span style={{verticalAlign: "middle"}}>  {item.postedBy.name}
-    // </span>
-
-    // </Link>
-    // {item.postedBy._id == state._id
-
-    //     && <i className="material-icons"
-    //         style={{ float: "right", color: "red" }}
-    //         onClick={() => { deletePost(item._id) }}
-    //     >delete</i>
-
-    // }
-    // </h5>}
 
 
     return (
@@ -184,13 +164,11 @@ const Home = () => {
                                     {item.postedBy._id == state._id
 
                                         && <i className="material-icons"
-                                            style={{ float: "right", position:"absolute", right:"0px", color: "red" }}
+                                            style={{ float: "right", position: "absolute", right: "0px", color: "red" }}
                                             onClick={() => { deletePost(item._id) }}
                                         >delete</i>
                                     }
                                 </div>
-
-
                             </div>
 
 
@@ -221,20 +199,33 @@ const Home = () => {
 
                                 <p>{item.body}</p>
 
-
-
                                 {
                                     item.comments.map(record => {
                                         return (
-                                            <h6 key={record._id} >
-                                                {record.postedBy._id == state._id
-                                                    && <i className="material-icons" style={{ color: "red", verticalAlign: "middle" }}
-                                                        onClick={() => {
-                                                            deleteComment(item._id, record._id)
-                                                        }}
-                                                    >delete</i>}
-                                                <span style={{ fontWeight: "500" }}>{record.postedBy.name}</span> {record.text}
-                                            </h6>
+
+                                            <div className="Comment-user" key={record._id}>
+                                                <div>
+                                                    <div className="Comment-user-avatar">
+                                                        <Link to={record.postedBy._id !== state._id ? "/profile/" + record.postedBy._id : "/profile"}>
+                                                            <img src={record.postedBy.pic} />
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                                <div className="Comment-user-nickname">
+                                                    <Link to={record.postedBy._id !== state._id ? "/profile/" + record.postedBy._id : "/profile"}>
+                                                        <span style={{ fontFamily: "'PT Sans', sans-serif", fontWeight: "bold" }}>{record.postedBy.name}</span>
+                                                    </Link>
+                                                    <br></br>
+                                                    {record.text}
+                                                    {record.postedBy._id == state._id
+
+                                                        && <i className="material-icons"
+                                                            style={{ float: "right", position: "absolute", right: "0px", color: "red" }}
+                                                            onClick={() => { deleteComment(item._id, record._id) }}
+                                                        >delete</i>
+                                                    }
+                                                </div>
+                                            </div>
                                         )
                                     })
                                 }

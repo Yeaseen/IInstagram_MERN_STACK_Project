@@ -49,12 +49,15 @@ const Profile = () => {
                         {
                             selfProfile.selfposts.map(item => {
                                 return (
+                                    
                                     <img key={item._id} className="item" src={item.photo} alt={item.title} />
+                                   
                                 )
                             })
                         }
                         
-                    </div>}
+                    </div>
+                    }
                 </div>
                 :
                 <h2>Loading.....</h2>

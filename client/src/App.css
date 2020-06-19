@@ -44,11 +44,12 @@ a {
     max-width: 500px;
     height: max-content;
     margin: 50px auto;
+    
 }
 
 .Post-user {
   display: flex;
-  padding: 16px;
+  padding: 4px;
   align-items: center;
 }
 .Post-user-avatar {
@@ -60,12 +61,32 @@ a {
   height: 100%;
   border-radius: 50%;
 }
+
 .Post-user-nickname {
   margin-left: 12px;
   font-family: 'PT Sans', sans-serif;
   font-weight: bold;
-
   justify-content: space-around;
+}
+
+.Comment-user {
+  display: flex;
+  padding: 2px;
+  height: auto;
+}
+.Comment-user-avatar {
+  width: 30px;
+  height: 30px;
+}
+.Comment-user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.Comment-user-nickname {
+  margin-left: 12px;
+ 
 }
 
 
