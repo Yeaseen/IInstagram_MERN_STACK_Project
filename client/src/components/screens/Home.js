@@ -140,6 +140,29 @@ const Home = () => {
             })
     }
 
+    // {<h5 style={{ padding: "5px" }}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+
+    // <img style={{
+    //     height: "30px",
+    //     width: "30px",
+    //     borderRadius: "15px",
+    //     verticalAlign: "middle"
+    // }} src={item.postedBy.pic} />
+    // <span style={{verticalAlign: "middle"}}>  {item.postedBy.name}
+    // </span>
+
+    // </Link>
+    // {item.postedBy._id == state._id
+
+    //     && <i className="material-icons"
+    //         style={{ float: "right", color: "red" }}
+    //         onClick={() => { deletePost(item._id) }}
+    //     >delete</i>
+
+    // }
+    // </h5>}
+
+
     return (
         <div className="home">
             {
@@ -147,26 +170,33 @@ const Home = () => {
                     return (
                         <div className="card home-card" key={item._id}>
 
-                            <h4 style={{ padding: "5px" }}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+
+                            <div className="Post-user">
+                                <div className="Post-user-avatar">
+                                    <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+                                        <img src={item.postedBy.pic} />
+                                    </Link>
+                                </div>
+                                <div className="Post-user-nickname">
+                                    <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+                                        <span>{item.postedBy.name}</span>
+                                    </Link>
+                                    {item.postedBy._id == state._id
+
+                                        && <i className="material-icons"
+                                            style={{ float: "right", position:"absolute", right:"0px", color: "red" }}
+                                            onClick={() => { deletePost(item._id) }}
+                                        >delete</i>
+                                    }
+                                </div>
+
+
+                            </div>
 
 
 
-                                <img style={{ verticalAlign: "middle" }} src={item.postedBy.pic} />
-                                <span style={{ verticalAlign: "middle" }}>
-                                    {item.postedBy.name}
-                                </span>
 
-                            </Link>
-                                {item.postedBy._id == state._id
-
-                                    && <i className="material-icons"
-                                        style={{ float: "right", color: "red" }}
-                                        onClick={() => { deletePost(item._id) }}
-                                    >delete</i>
-
-                                }
-                            </h4>
-                            <div className="card-image">
+                            < div className="card-image">
                                 <img src={item.photo} />
                             </div>
                             <div className="card-content">
@@ -221,7 +251,7 @@ const Home = () => {
                     )
                 })
             }
-        </div>
+        </div >
     )
 }
 

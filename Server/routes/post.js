@@ -59,8 +59,8 @@ router.get('/getsubpost',requireLogin,(req,res)=>{
     .select("-password")
     .then(result=>{
         Post.find({postedBy:{$in:result.following}})
-        .populate("postedBy","_id name")
-        .populate("comments.postedBy","_id name")
+        .populate("postedBy","_id name pic")
+        .populate("comments.postedBy","_id name pic")
         .then(posts=>{
             res.json({posts})
     }).catch(err=>{
@@ -95,8 +95,8 @@ router.put('/like', requireLogin, (req, res) => {
         $push: { likes: req.user._id }
     }, {
         new: true
-    }).populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    }).populate("postedBy", "_id name pic")
+    .populate("comments.postedBy", "_id name pic")
         .exec((err, result) => {
             if (err) {
                 return res.status(422).json({ error: err })
@@ -112,8 +112,8 @@ router.put('/unlike', requireLogin, (req, res) => {
         $pull: { likes: req.user._id }
     }, {
         new: true
-    }).populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    }).populate("postedBy", "_id name pic")
+    .populate("comments.postedBy", "_id name pic")
         .exec((err, result) => {
             if (err) {
                 return res.status(422).json({ error: err })
@@ -134,8 +134,8 @@ router.put('/comment', requireLogin, (req, res) => {
         $push: { comments:comment}
     }, {
         new: true
-    }).populate("comments.postedBy", "_id name")
-    .populate("postedBy", "_id name")
+    }).populate("comments.postedBy", "_id name pic")
+    .populate("postedBy", "_id name pic")
         .exec((err, result) => {
             if (err) {
                 return res.status(422).json({ error: err })
@@ -182,8 +182,8 @@ router.put('/deletecomment/:postId/:commentId', requireLogin, (req, res) => {
         } }
     }, {
         new:true
-    }).populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    }).populate("postedBy", "_id name pic")
+    .populate("comments.postedBy", "_id name pic")
         .exec((err, result) => {
             if (err) {
                 return res.status(422).json({ error: err })
