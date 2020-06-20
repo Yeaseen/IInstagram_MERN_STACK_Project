@@ -171,9 +171,6 @@ const Home = () => {
                                 </div>
                             </div>
 
-
-
-
                             < div className="card-image">
                                 <img src={item.photo} />
                             </div>
@@ -192,11 +189,8 @@ const Home = () => {
                                         onClick={() => { likePost(item._id) }}
                                     >thumb_up</i>
                                 }
-
-
                                 <h6>{item.likes.length} likes</h6>
                                 <h6>{item.title}</h6>
-
                                 <p>{item.body}</p>
 
                                 {

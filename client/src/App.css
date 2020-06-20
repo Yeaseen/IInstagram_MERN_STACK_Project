@@ -30,10 +30,35 @@ a {
 }
 
 .gallery{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
 }
+
+.gallery-content{
+  display:inline-block;
+  padding: 30px;
+  position: relative;
+}
+.gallery-content img{
+  transition: 1s;
+  width: 250px;
+  height: 250px;
+}
+
+.gallery-content img:hover{
+  filter: grayscale(100%);
+  transform: scale(1.05);
+}
+
+.gallery-content .material-icons{
+  position: absolute;
+  top: 0;
+  right: 50%;
+  left: auto;
+}
+
 
 .item{
     width: 30%;
