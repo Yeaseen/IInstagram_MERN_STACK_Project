@@ -6,6 +6,11 @@ const Profile = () => {
     const [selfProfileUser, setSelfProfileUser] = useState(null)
     const [selfProfilePosts, setSelfProfilePosts] = useState([])
     const { state, dispatch } = useContext(userContext)
+
+    const [image, setImage] = useState("")
+    
+
+
     useEffect(() => {
         fetch('/mypost', {
             method: "get",
@@ -19,6 +24,48 @@ const Profile = () => {
                 setSelfProfilePosts(result.selfposts)
             })
     }, [])
+
+    
+
+    useEffect(() => {
+        if (image) {
+            const data = new FormData()
+            data.append("file", image)
+            data.append("upload_preset", "iinsta-clone")
+            data.append("cloud_name", "yeaseen")
+
+            fetch("https://api.cloudinary.com/v1_1/yeaseen/image/upload", {
+                method: "post",
+                body: data
+            })
+                .then(res => res.json())
+                .then(data => {
+                    fetch('/updateprofilepic',{
+                        method:"put",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + localStorage.getItem("jwt")
+                        },
+                        body:JSON.stringify({
+                            pic:data.url
+                        })
+                    }).then(res=>res.json())
+                    .then(result=>{
+                        //console.log(result)
+                        setSelfProfileUser(result)
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+        }
+
+    }, [image])
+
+    const updateProfilePic = (file) => {
+        setImage(file)
+    }
 
     const deletePost = (postid) => {
         fetch(`/deletepost/${postid}`, {
@@ -42,46 +89,62 @@ const Profile = () => {
                 ?
                 <div style={{ maxWidth: "700px", margin: "0px auto" }}>
                     <div style={{
-                        display: "flex",
-                        justifyContent: "space-around",
                         margin: "18px 0px",
                         borderBottom: "1px solid grey"
                     }}>
-                        <div>
-                            <img style={{ width: "160px", height: "160px", borderRadius: "80px" }}
-                                src={selfProfileUser.pic}
-                            />
-                        </div>
-                        <div>
-                            <h4> {selfProfileUser.name} </h4>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "space-around",
 
-                            <div style={{ display: "flex", justifyContent: "space-around", width: "110%" }}>
-                                <h6> {selfProfilePosts.length} post</h6>
-                                <h6> {selfProfileUser.followers.length} followers</h6>
-                                <h6> {selfProfileUser.following.length} following</h6>
+                        }}>
+                            <div>
+                                <img style={{ width: "160px", height: "160px", borderRadius: "80px" }}
+                                    src={selfProfileUser.pic}
+                                />
+                            </div>
+                            <div>
+                                <h4> {selfProfileUser.name} </h4>
+
+                                <div style={{ display: "flex", justifyContent: "space-around", width: "110%" }}>
+                                    <h6> {selfProfilePosts.length} posts</h6>
+                                    <h6> {selfProfileUser.followers.length} followers</h6>
+                                    <h6> {selfProfileUser.following.length} following</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="file-field input-field" style={{ margin: "1px 0px 10px 55px" }}>
+                            <div className="btn #64b5f6 blue darken-1">
+                                <span>Update Profile Picture</span>
+                                <input type="file" onChange={(e) => {
+                                    updateProfilePic(e.target.files[0])
+                                    e.target.value=''
+                                    }} />
+                            </div>
+                            <div className="file-path-wrapper">
+                                <input className="file-path validate" type="text" />
                             </div>
                         </div>
                     </div>
-
-                    {<div className="gallery">
+                    <div className="gallery">
                         {
                             selfProfilePosts.map(item => {
                                 return (
                                     <div key={item._id} className="gallery-content">
                                         <i className="material-icons"
-                                            style={{ top:"0px", color: "red" }}
+                                            style={{ top: "0px", color: "red" }}
                                             onClick={() => { deletePost(item._id) }}
                                         >delete</i>
-                                       
-                                        <img src={item.photo} alt={item.title}  />
-                                        
+
+                                        <img src={item.photo} alt={item.title} />
+
                                     </div>
                                 )
                             })
                         }
 
                     </div>
-                    }
+
                 </div>
                 :
                 <h2>Loading.....</h2>

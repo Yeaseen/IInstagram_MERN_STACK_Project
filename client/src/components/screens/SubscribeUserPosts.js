@@ -8,7 +8,7 @@ const SubscribedUserPosts = () => {
 
     useEffect(() => {
         fetch('/getsubpost', {
-            method:"get",
+            method: "get",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
@@ -102,21 +102,6 @@ const SubscribedUserPosts = () => {
             })
     }
 
-    // const deletePost = (postid) => {
-    //     fetch(`/deletepost/${postid}`, {
-    //         method: "delete",
-    //         headers: {
-    //             "Authorization": "Bearer " + localStorage.getItem("jwt")
-    //         }
-    //     }).then(res => res.json())
-    //         .then(result => {
-    //             console.log(result)
-    //             const newData = data.filter(item => {
-    //                 return item._id != result._id
-    //             })
-    //             setData(newData)
-    //         })
-    // }
 
     const deleteComment = (postId, commentId) => {
         //console.log(commentId)
@@ -148,18 +133,21 @@ const SubscribedUserPosts = () => {
                     return (
                         <div className="card home-card" key={item._id}>
 
-                            <h5 style={{padding:"5px"}}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
-                                {item.postedBy.name}
-                            </Link>
-                                {/* {item.postedBy._id == state._id
+                            <div className="Post-user">
+                                <div className="Post-user-avatar">
+                                    <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+                                        <img src={item.postedBy.pic} />
+                                    </Link>
+                                </div>
+                                <div className="Post-user-nickname">
+                                    <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+                                        <span>{item.postedBy.name}</span>
+                                    </Link>
 
-                                    && <i className="material-icons"
-                                        style={{ float: "right" }}
-                                        onClick={() => { deletePost(item._id) }}
-                                    >delete</i>
+                                </div>
+                            </div>
 
-                                } */}
-                            </h5>
+
                             <div className="card-image">
                                 <img src={item.photo} />
                             </div>
@@ -188,15 +176,29 @@ const SubscribedUserPosts = () => {
                                 {
                                     item.comments.map(record => {
                                         return (
-                                            <h6 key={record._id} >
-                                                {record.postedBy._id == state._id
-                                                    && <i className="material-icons" style={{ color: "red", verticalAlign: "middle" }}
-                                                        onClick={() => {
-                                                            deleteComment(item._id, record._id)
-                                                        }}
-                                                    >delete</i>}
-                                                <span style={{ fontWeight: "500" }}>{record.postedBy.name}</span> {record.text}
-                                            </h6>
+                                            <div className="Comment-user" key={record._id}>
+                                                <div>
+                                                    <div className="Comment-user-avatar">
+                                                        <Link to={record.postedBy._id !== state._id ? "/profile/" + record.postedBy._id : "/profile"}>
+                                                            <img src={record.postedBy.pic} />
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                                <div className="Comment-user-nickname">
+                                                    <Link to={record.postedBy._id !== state._id ? "/profile/" + record.postedBy._id : "/profile"}>
+                                                        <span style={{ fontFamily: "'PT Sans', sans-serif", fontWeight: "bold" }}>{record.postedBy.name}</span>
+                                                    </Link>
+                                                    <br></br>
+                                                    {record.text}
+                                                    {record.postedBy._id == state._id
+
+                                                        && <i className="material-icons"
+                                                            style={{ float: "right", position: "absolute", right: "0px", color: "red" }}
+                                                            onClick={() => { deleteComment(item._id, record._id) }}
+                                                        >delete</i>
+                                                    }
+                                                </div>
+                                            </div>
                                         )
                                     })
                                 }

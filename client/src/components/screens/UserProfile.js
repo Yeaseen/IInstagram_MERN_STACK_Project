@@ -19,8 +19,8 @@ const UserProfile = () => {
             .then(result => {
                 //console.log(result)
                 setProfile(result)
-                {result.isFollower ? setShowFollow(false) : setShowFollow(true) }
-            }) 
+                { result.isFollower ? setShowFollow(false) : setShowFollow(true) }
+            })
     }, [])
 
     const followUser = () => {
@@ -62,8 +62,8 @@ const UserProfile = () => {
     return (
         <>
             {userProfile
-                ?  
-                   <div style={{ maxWidth: "700px", margin: "0px auto" }}>
+                ?
+                <div style={{ maxWidth: "700px", margin: "0px auto" }}>
                     <div style={{
                         display: "flex",
                         justifyContent: "space-around",
@@ -83,7 +83,7 @@ const UserProfile = () => {
                                 <h6>{userProfile.user.followers.length} followers</h6>
                                 <h6>{userProfile.user.following.length} following</h6>
                             </div>
-                           
+
                             {
                                 showfollow
                                     ? <button style={{
@@ -110,7 +110,10 @@ const UserProfile = () => {
                         {
                             userProfile.posts.map(item => {
                                 return (
-                                    <img key={item._id} className="item" src={item.photo} alt={item.title} />
+                                    <div key={item._id} className="gallery-content">
+                                        <img src={item.photo} alt={item.title} />
+                                    </div>
+
                                 )
                             })
                         }
