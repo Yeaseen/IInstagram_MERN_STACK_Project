@@ -161,7 +161,7 @@ router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
                 const fullURL = post.photo
                 const shortenURL = fullURL.split("/").pop().split('.')[0]
                 
-                cloudinary.v2.uploader.destroy(shortenURL,resource_type='image', (error,result)=>{
+                cloudinary.v2.uploader.destroy(shortenURL,resource_type='image',(error,result)=>{
                     //console.log(result,error)
                     post.remove()
                     .then(result=>{

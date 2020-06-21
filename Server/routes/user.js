@@ -2,10 +2,18 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 mongoose.set('useFindAndModify', false);
-const requireLogin = require('../middleWare/requireLogin')
+const requireLogin = require('../middleWare/requireLogin');
+
 const Post = mongoose.model("Post")
 const User = mongoose.model("User")
+const cloudinary = require('cloudinary');
+require("dotenv").config()
 
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+});
 
 router.get('/user/:userid', requireLogin, (req, res) => {
     User.findOne({ _id: req.params.userid })
@@ -72,15 +80,37 @@ router.put('/unfollow', requireLogin, (req, res) => {
     )
 })
 
+
 router.put('/updateprofilepic', requireLogin, (req, res) => {
-    User.findByIdAndUpdate(req.user._id, { $set: { pic: req.body.pic } }, {
-        new: true
-    }).select("-password")
-    .then(result => {
-        res.json(result)
-    }).catch(err => {
-        return res.status(422).json({ error: err })
+
+    User.findOne({ _id: req.user._id })
+    .select("-password")
+    .then(user=>{
+        const fullURL = user.pic
+        const shortenURL = fullURL.split("/").pop().split('.')[0]
+        cloudinary.v2.uploader.destroy(shortenURL,resource_type='image',(error,result)=>{
+            //console.log(result,error)
+            user.pic=req.body.pic
+
+            user.markModified('pic')
+            user.save((err,result)=>{
+                if(err){
+                    return res.status(422).json({ error: err })
+                }
+                res.json(result)
+            })
+            
+        })   
     })
+
+    // User.findByIdAndUpdate(req.user._id, { $set: { pic: req.body.pic } }, {
+    //     new: true
+    // }).select("-password")
+    // .then(result => {
+    //     res.json(result)
+    // }).catch(err => {
+    //     return res.status(422).json({ error: err })
+    // })
         
 
 })

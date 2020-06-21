@@ -1,14 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 
 import { userContext } from '../../App'
 
 const Profile = () => {
     const [selfProfileUser, setSelfProfileUser] = useState(null)
     const [selfProfilePosts, setSelfProfilePosts] = useState([])
+    const inputImageName = useRef(null);
+    const inputImageFile = useRef(null);
     const { state, dispatch } = useContext(userContext)
 
     const [image, setImage] = useState("")
-    
+
 
 
     useEffect(() => {
@@ -25,7 +27,7 @@ const Profile = () => {
             })
     }, [])
 
-    
+
 
     useEffect(() => {
         if (image) {
@@ -40,20 +42,22 @@ const Profile = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    fetch('/updateprofilepic',{
-                        method:"put",
+                    fetch('/updateprofilepic', {
+                        method: "put",
                         headers: {
                             "Content-Type": "application/json",
                             "Authorization": "Bearer " + localStorage.getItem("jwt")
                         },
-                        body:JSON.stringify({
-                            pic:data.url
+                        body: JSON.stringify({
+                            pic: data.url
                         })
-                    }).then(res=>res.json())
-                    .then(result=>{
-                        //console.log(result)
-                        setSelfProfileUser(result)
-                    })
+                    }).then(res => res.json())
+                        .then(result => {
+                            //console.log(result)
+                            setSelfProfileUser(result)
+                            inputImageFile.current.value = null
+                            inputImageName.current.value = null
+                        })
                 })
                 .catch(err => {
                     console.log(err)
@@ -116,13 +120,15 @@ const Profile = () => {
                         <div className="file-field input-field" style={{ margin: "1px 0px 10px 55px" }}>
                             <div className="btn #64b5f6 blue darken-1">
                                 <span>Update Profile Picture</span>
-                                <input type="file" onChange={(e) => {
+
+                                <input type="file" ref={inputImageFile} onChange={(e) => {
+                                    e.preventDefault()
                                     updateProfilePic(e.target.files[0])
-                                    e.target.value=''
-                                    }} />
+
+                                }} />
                             </div>
                             <div className="file-path-wrapper">
-                                <input className="file-path validate" type="text" />
+                                <input className="file-path validate" ref={inputImageName} type="text" placeholder="Upload you image" />
                             </div>
                         </div>
                     </div>
