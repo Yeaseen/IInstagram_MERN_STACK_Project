@@ -1,15 +1,29 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
-
 import { userContext } from '../../App'
 
+import axios from 'axios';
 const Profile = () => {
     const [selfProfileUser, setSelfProfileUser] = useState(null)
     const [selfProfilePosts, setSelfProfilePosts] = useState([])
+    const [uploadPercentage, setUploadPercentage] = useState(0)
+    const [progressStyle, setProgressStyle] = useState({})
     const inputImageName = useRef(null);
     const inputImageFile = useRef(null);
     const { state, dispatch } = useContext(userContext)
 
     const [image, setImage] = useState("")
+
+    const setProgressStyleF = (per) => {
+        var p = (per / 100) * 645
+        //console.log(p)
+        const newStyle = {
+            opacity: 1,
+            width: p
+        }
+        
+        setProgressStyle(newStyle)
+       
+    }
 
 
 
@@ -31,17 +45,30 @@ const Profile = () => {
 
     useEffect(() => {
         if (image) {
+
             const data = new FormData()
             data.append("file", image)
             data.append("upload_preset", "iinsta-clone")
             data.append("cloud_name", "yeaseen")
 
-            fetch("https://api.cloudinary.com/v1_1/yeaseen/image/upload", {
-                method: "post",
-                body: data
-            })
-                .then(res => res.json())
-                .then(data => {
+            setUploadPercentage(1)
+            setProgressStyleF(1)
+
+            // fetch("https://api.cloudinary.com/v1_1/yeaseen/image/upload", {
+            //     method: "post",
+            //     body: data
+            // })
+
+            axios.post("https://api.cloudinary.com/v1_1/yeaseen/image/upload", data)
+                .then(res => {
+                    //console.log(res.data.url)
+                    // setSelfProfileUser({
+                    //     ...selfProfileUser,
+                    //     pic: res.data.url
+                    // })
+                    setUploadPercentage(50)
+                    setProgressStyleF(50)
+
                     fetch('/updateprofilepic', {
                         method: "put",
                         headers: {
@@ -49,22 +76,27 @@ const Profile = () => {
                             "Authorization": "Bearer " + localStorage.getItem("jwt")
                         },
                         body: JSON.stringify({
-                            pic: data.url
+                            pic: res.data.url
                         })
                     }).then(res => res.json())
                         .then(result => {
                             //console.log(result)
                             setSelfProfileUser(result)
-                            inputImageFile.current.value = null
-                            inputImageName.current.value = null
+                            setUploadPercentage(100)
+                            setProgressStyleF(100)
+                            
+                             setTimeout(()=>{
+                                inputImageFile.current.value = null
+                                inputImageName.current.value = null
+                                setUploadPercentage(0)
+                                setProgressStyleF(0)
+                             },1300)
                         })
                 })
                 .catch(err => {
                     console.log(err)
                 })
-
         }
-
     }, [image])
 
     const updateProfilePic = (file) => {
@@ -130,7 +162,18 @@ const Profile = () => {
                             <div className="file-path-wrapper">
                                 <input className="file-path validate" ref={inputImageName} type="text" placeholder="Upload you image" />
                             </div>
+
+                            {uploadPercentage > 0 &&
+                                <div className="progress" >
+                                    <div className="progress-done" style={progressStyle}>
+                                        {uploadPercentage}%
+	                                </div>
+                                </div>
+                            }
+
+
                         </div>
+
                     </div>
                     <div className="gallery">
                         {

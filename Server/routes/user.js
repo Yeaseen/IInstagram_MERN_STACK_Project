@@ -81,6 +81,20 @@ router.put('/unfollow', requireLogin, (req, res) => {
 })
 
 
+// router.get('/getpublicimageurl',requireLogin,(req,res) =>{
+//     const data = new FormData()
+//     data.append("file", req.body.image)
+//     data.append("upload_preset", "iinsta-clone")
+//     data.append("cloud_name", "yeaseen")
+
+//     axios.post("https://api.cloudinary.com/v1_1/yeaseen/image/upload", data)
+//     .then(result=>{
+//         res.json(result)
+//     })
+
+// })
+
+
 router.put('/updateprofilepic', requireLogin, (req, res) => {
 
     User.findOne({ _id: req.user._id })
