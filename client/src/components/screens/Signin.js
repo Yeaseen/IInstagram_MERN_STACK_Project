@@ -3,9 +3,9 @@ import {Link, useHistory} from 'react-router-dom'
 
 import {userContext} from '../../App'
 //import {WebSocketContext} from '../../WebSocket'
-import makeToast from '../../Toaster'
 
 
+import Swal from "sweetalert2";
 const SignIn = () => {
 
     const {state,dispatch} = useContext(userContext)
@@ -18,7 +18,12 @@ const SignIn = () => {
 
         if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
             
-            makeToast("error","Invalid email or password")
+         
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Invalid email or password!'
+              })
             return
         }
         fetch("/signin",{
@@ -35,14 +40,26 @@ const SignIn = () => {
             //console.log(data)
             if(data.error){
                 
-                makeToast("error",data.error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: data.error
+                  })
+                
             }
             else{
                 localStorage.setItem("jwt",data.token)
                 localStorage.setItem("user",JSON.stringify(data.user))
                 dispatch({type:"USER", payload:data.user})
                 
-                makeToast("success","Signed in successfully")
+                
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Signed in successfully',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
                 history.push("/")
                 //ws.setupSocket(data.token)
             }

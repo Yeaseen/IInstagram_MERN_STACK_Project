@@ -2,6 +2,9 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import { userContext } from '../../App'
 
 import axios from 'axios';
+import Swal from "sweetalert2";
+
+
 const Profile = () => {
     const [selfProfileUser, setSelfProfileUser] = useState(null)
     const [selfProfilePosts, setSelfProfilePosts] = useState([])
@@ -20,14 +23,15 @@ const Profile = () => {
             opacity: 1,
             width: p
         }
-        
+
         setProgressStyle(newStyle)
-       
+
     }
 
 
 
     useEffect(() => {
+
         fetch('/mypost', {
             method: "get",
             headers: {
@@ -45,7 +49,6 @@ const Profile = () => {
 
     useEffect(() => {
         if (image) {
-
             const data = new FormData()
             data.append("file", image)
             data.append("upload_preset", "iinsta-clone")
@@ -84,13 +87,13 @@ const Profile = () => {
                             setSelfProfileUser(result)
                             setUploadPercentage(100)
                             setProgressStyleF(100)
-                            
-                             setTimeout(()=>{
+
+                            setTimeout(() => {
                                 inputImageFile.current.value = null
                                 inputImageName.current.value = null
                                 setUploadPercentage(0)
                                 setProgressStyleF(0)
-                             },1300)
+                            }, 1300)
                         })
                 })
                 .catch(err => {
@@ -101,23 +104,48 @@ const Profile = () => {
 
     const updateProfilePic = (file) => {
         setImage(file)
+        
     }
 
+
     const deletePost = (postid) => {
-        fetch(`/deletepost/${postid}`, {
-            method: "delete",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("jwt")
-            }
-        }).then(res => res.json())
-            .then(result => {
-                //console.log(result)
-                const newData = selfProfilePosts.filter(item => {
-                    return item._id != result._id
-                })
-                setSelfProfilePosts(newData)
-            })
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "It will permanently deleted !",
+            type: 'warning',
+            allowOutsideClick: false,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+
+            if (result.value) {
+                fetch(`/deletepost/${postid}`, {
+                            method: "delete",
+                            headers: {
+                                "Authorization": "Bearer " + localStorage.getItem("jwt")
+                            }
+                        }).then(res => res.json())
+                            .then(result => {
+                                //console.log(result)
+                                const newData = selfProfilePosts.filter(item => {
+                                    return item._id != result._id
+                                })
+                                setSelfProfilePosts(newData)
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your Post has been removed.',
+                                    'success'
+                                  )
+                            })
+                
+              }
+        })
     }
+
+
 
     return (
         <>
@@ -156,11 +184,10 @@ const Profile = () => {
                                 <input type="file" ref={inputImageFile} onChange={(e) => {
                                     e.preventDefault()
                                     updateProfilePic(e.target.files[0])
-
                                 }} />
                             </div>
                             <div className="file-path-wrapper">
-                                <input className="file-path validate" ref={inputImageName} type="text" placeholder="Upload you image" />
+                                <input className="file-path validate" ref={inputImageName}  type="text" placeholder="Upload you image" />
                             </div>
 
                             {uploadPercentage > 0 &&
@@ -184,7 +211,6 @@ const Profile = () => {
                                             style={{ top: "0px", color: "red" }}
                                             onClick={() => { deletePost(item._id) }}
                                         >delete</i>
-
                                         <img src={item.photo} alt={item.title} />
 
                                     </div>

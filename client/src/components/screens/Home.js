@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { userContext } from '../../App'
-
+import Swal from "sweetalert2";
 import { Link } from 'react-router-dom'
 const Home = () => {
     const [data, setData] = useState([])
@@ -102,43 +102,93 @@ const Home = () => {
     }
 
     const deletePost = (postid) => {
-        fetch(`/deletepost/${postid}`, {
-            method: "delete",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("jwt")
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "It will permanently deleted !",
+            type: 'warning',
+            allowOutsideClick: false,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+
+            if (result.value) {
+                fetch(`/deletepost/${postid}`, {
+                    method: "delete",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("jwt")
+                    }
+                }).then(res => res.json())
+                    .then(result => {
+                        //console.log(result)
+                        const newData = data.filter(item => {
+                            return item._id != result._id
+                        })
+                        setData(newData)
+                        Swal.fire(
+                            'Deleted!',
+                            'Your Post has been removed.',
+                            'success'
+                        )
+                    })
+
             }
-        }).then(res => res.json())
-            .then(result => {
-                //console.log(result)
-                const newData = data.filter(item => {
-                    return item._id != result._id
-                })
-                setData(newData)
-            })
+        })
+
+
+
+
+
+
+
     }
 
     const deleteComment = (postId, commentId) => {
         //console.log(commentId)
-        fetch(`/deletecomment/${postId}/${commentId}`, {
-            method: "put",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("jwt")
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "It will permanently deleted !",
+            type: 'warning',
+            allowOutsideClick: false,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+
+            if (result.value) {
+                fetch(`/deletecomment/${postId}/${commentId}`, {
+                    method: "put",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("jwt")
+                    }
+                }).then(res => res.json())
+                    .then(result => {
+                        //console.log("Replu from Server")
+                        //console.log(result)
+                        const newData = data.map(item => {
+                            if (item._id === result._id) {
+                                return result
+                            }
+                            else {
+                                return item
+                            }
+                        })
+                        setData(newData)
+                        Swal.fire(
+                            'Deleted!',
+                            'Your Comment has been removed.',
+                            'success'
+                        )
+                    })
             }
-        }).then(res => res.json())
-            .then(result => {
-                //console.log("Replu from Server")
-                //console.log(result)
-                const newData = data.map(item => {
-                    if (item._id === result._id) {
-                        return result
-                    }
-                    else {
-                        return item
-                    }
-                })
-                setData(newData)
-            })
+        })
+
     }
+
+
 
 
 
@@ -165,6 +215,7 @@ const Home = () => {
 
                                         && <i className="material-icons"
                                             style={{ float: "right", position: "absolute", right: "0px", color: "red" }}
+                                            //onClick={() => { deletePost(item._id) }}
                                             onClick={() => { deletePost(item._id) }}
                                         >delete</i>
                                     }
@@ -189,7 +240,7 @@ const Home = () => {
                                         onClick={() => { likePost(item._id) }}
                                     >thumb_up</i>
                                 }
-                                <div style={{ borderBottom: "1px solid grey" }}>
+                                <div style={{ borderBottom: "2px solid blue" }}>
                                     <h6>{item.likes.length} likes</h6>
                                     <h6>{item.title}</h6>
                                     <p>{item.body}</p>

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import M from 'materialize-css'
+
+
+import Swal from "sweetalert2";
 const CreatePost = () => {
 
     const history = useHistory()
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [image, setImage] = useState("")
+    
     const [url, setUrl] = useState("")
 
     useEffect(() => {
@@ -27,10 +30,20 @@ const CreatePost = () => {
                 .then(data => {
                     //console.log(data)
                     if (data.error) {
-                        M.toast({ html: data.error, classes: "#c62828 red darken-3" })
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: data.error
+                        })
                     }
                     else {
-                        M.toast({ html: "Created post successfully", classes: "#43a047 green darken-1" })
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Created post successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                         history.push("/")
                     }
                 }).catch(err => {
@@ -88,7 +101,9 @@ const CreatePost = () => {
             <div className="file-field input-field">
                 <div className="btn #64b5f6 blue darken-1">
                     <span>Upload Image</span>
-                    <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+                    <input type="file" onChange={(e) => {
+                        setImage(e.target.files[0])
+                        }} />
                 </div>
                 <div className="file-path-wrapper">
                     <input className="file-path validate" type="text" />

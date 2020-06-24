@@ -167,11 +167,11 @@ const SubscribedUserPosts = () => {
                                     >thumb_up</i>
                                 }
 
-
-                                <h6>{item.likes.length} likes</h6>
-                                <h6>{item.title}</h6>
-
-                                <p>{item.body}</p>
+                                <div style={{ borderBottom: "2px solid blue" }}>
+                                    <h6>{item.likes.length} likes</h6>
+                                    <h6>{item.title}</h6>
+                                    <p>{item.body}</p>
+                                </div>
 
                                 {
                                     item.comments.map(record => {

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import M from 'materialize-css'
-import makeToast from '../../Toaster'
+import Swal from "sweetalert2";
 const SignUp = () => {
     const history = useHistory()
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [image, setImage] = useState("")
-    const [url, setUrl] = useState("")
+    const [imageName, setImageName] = useState("")
+    const [url, setUrl] = useState(undefined)
 
     useEffect(()=>{
         if(url){
@@ -39,8 +39,13 @@ const SignUp = () => {
     const uploadFields =()=>{
 
         if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
-            //M.toast({html: "Invalid Email",classes: "#c62828 red darken-3"})
-            makeToast("error", "Invalid Email")
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "Invalid Email"
+              })
+
             return
         }
         fetch("/signup", {
@@ -57,12 +62,22 @@ const SignUp = () => {
         }).then(res => res.json())
             .then(data => {
                 if (data.error) {
-                    //M.toast({html: data.error,classes: "#c62828 red darken-3"})
-                    makeToast("error", data.error)
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: data.error
+                      })
                 }
                 else {
-                    //M.toast({html:data.message,classes: "#43a047 green darken-1"})
-                    makeToast("success", data.message)
+                    
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                      })
                     history.push("/signin")
                 }
             }).catch(err => {
@@ -108,10 +123,13 @@ const SignUp = () => {
                 <div className="file-field input-field">
                     <div className="btn #64b5f6 blue darken-1">
                         <span>Upload Profile Picture</span>
-                        <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+                        <input type="file" onChange={(e) => {
+                            setImage(e.target.files[0])
+                            setImageName(e.target.files[0].name)
+                        }} />
                     </div>
                     <div className="file-path-wrapper">
-                        <input className="file-path validate" type="text" />
+                        <input className="file-path validate" value={imageName} type="text" placeholder="Upload you image"/>
                     </div>
                 </div>
 

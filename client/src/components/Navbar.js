@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { userContext } from '../App'
-
+import Swal from "sweetalert2";
 import { WebSocketContext } from '../WebSocket'
 
 const NavBar = () => {
@@ -22,6 +22,13 @@ const NavBar = () => {
                         onClick={() => {
                             localStorage.clear()
                             dispatch({ type: "CLEAR" })
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Logged out successfully',
+                                showConfirmButton: false,
+                                timer: 1500
+                              })
                             history.push("/signin")
                             //if(ws.socket){ws.socket.disconnect()}
                         }}
