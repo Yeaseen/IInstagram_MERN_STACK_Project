@@ -83,6 +83,20 @@ router.put('/unfollow', requireLogin, (req, res) => {
 })
 
 
+
+router.post('/upload', requireLogin, (req,res) =>{
+    let imageFile = req.files.file;
+    //console.log(imageFile)
+    cloudinary.v2.uploader.upload(imageFile.tempFilePath,(error,result)=>{
+        if(error){
+            return res.status(422).json({ error })
+        }
+        //console.log(result)
+        res.json(result)
+    })
+})
+
+
  
 router.put('/updateprofilepic', requireLogin, (req, res) => {
 

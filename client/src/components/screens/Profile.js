@@ -45,30 +45,22 @@ const Profile = () => {
             })
     }, [])
 
-
-
     useEffect(() => {
         if (image) {
-            const data = new FormData()
-            data.append("file", image)
-            data.append("upload_preset", "iinsta-clone")
-            data.append("cloud_name", "yeaseen")
 
             setUploadPercentage(1)
             setProgressStyleF(1)
+            const data = new FormData()
+            data.append("file", image)
 
-            // fetch("https://api.cloudinary.com/v1_1/yeaseen/image/upload", {
-            //     method: "post",
-            //     body: data
-            // })
-
-            axios.post("https://api.cloudinary.com/v1_1/yeaseen/image/upload", data)
-                .then(res => {
-                    //console.log(res.data.url)
-                    // setSelfProfileUser({
-                    //     ...selfProfileUser,
-                    //     pic: res.data.url
-                    // })
+            axios.post('/upload', data, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("jwt")
+                }
+            })
+                .then(response => {
+                    //console.log(response)
                     setUploadPercentage(50)
                     setProgressStyleF(50)
 
@@ -79,7 +71,7 @@ const Profile = () => {
                             "Authorization": "Bearer " + localStorage.getItem("jwt")
                         },
                         body: JSON.stringify({
-                            pic: res.data.url
+                            pic: response.data.url
                         })
                     }).then(res => res.json())
                         .then(result => {
@@ -95,16 +87,16 @@ const Profile = () => {
                                 setProgressStyleF(0)
                             }, 1300)
                         })
-                })
-                .catch(err => {
-                    console.log(err)
+                }).catch(error => {
+                    console.log(error)
                 })
         }
     }, [image])
 
+
     const updateProfilePic = (file) => {
         setImage(file)
-        
+
     }
 
 
@@ -123,25 +115,25 @@ const Profile = () => {
 
             if (result.value) {
                 fetch(`/deletepost/${postid}`, {
-                            method: "delete",
-                            headers: {
-                                "Authorization": "Bearer " + localStorage.getItem("jwt")
-                            }
-                        }).then(res => res.json())
-                            .then(result => {
-                                //console.log(result)
-                                const newData = selfProfilePosts.filter(item => {
-                                    return item._id != result._id
-                                })
-                                setSelfProfilePosts(newData)
-                                Swal.fire(
-                                    'Deleted!',
-                                    'Your Post has been removed.',
-                                    'success'
-                                  )
-                            })
-                
-              }
+                    method: "delete",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("jwt")
+                    }
+                }).then(res => res.json())
+                    .then(result => {
+                        //console.log(result)
+                        const newData = selfProfilePosts.filter(item => {
+                            return item._id != result._id
+                        })
+                        setSelfProfilePosts(newData)
+                        Swal.fire(
+                            'Deleted!',
+                            'Your Post has been removed.',
+                            'success'
+                        )
+                    })
+
+            }
         })
     }
 
@@ -187,7 +179,7 @@ const Profile = () => {
                                 }} />
                             </div>
                             <div className="file-path-wrapper">
-                                <input className="file-path validate" ref={inputImageName}  type="text" placeholder="Upload you image" />
+                                <input className="file-path validate" ref={inputImageName} type="text" placeholder="Upload you image" />
                             </div>
 
                             {uploadPercentage > 0 &&

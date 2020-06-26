@@ -4,6 +4,7 @@ const app = express()
 const mongoose = require('mongoose')
 const PORT = 5000
 
+const fileUpload = require('express-fileupload');
 //const {MONGOURI} = require('./key')
 require("dotenv").config()
 
@@ -28,6 +29,10 @@ require('./models/message')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(fileUpload({
+	useTempFiles : true,
+    tempFileDir : '/tmp/'
+}));
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
 app.use(require('./routes/user'))
