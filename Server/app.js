@@ -5,8 +5,10 @@ const mongoose = require('mongoose')
 const PORT = 5000
 
 const fileUpload = require('express-fileupload');
-//const {MONGOURI} = require('./key')
+
 require("dotenv").config()
+
+
 
 mongoose.connect(process.env.MONGOURI, {
 	useNewUrlParser: true,

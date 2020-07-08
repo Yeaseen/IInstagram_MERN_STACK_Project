@@ -10,8 +10,6 @@ const Profile = () => {
     const [selfProfilePosts, setSelfProfilePosts] = useState([])
     const [uploadPercentage, setUploadPercentage] = useState(0)
     const [progressStyle, setProgressStyle] = useState({})
-    const inputImageName = useRef(null);
-    const inputImageFile = useRef(null);
     const { state, dispatch } = useContext(userContext)
 
     const [image, setImage] = useState("")
@@ -81,8 +79,7 @@ const Profile = () => {
                             setProgressStyleF(100)
 
                             setTimeout(() => {
-                                inputImageFile.current.value = null
-                                inputImageName.current.value = null
+
                                 setUploadPercentage(0)
                                 setProgressStyleF(0)
                             }, 1300)
@@ -173,13 +170,13 @@ const Profile = () => {
                             <div className="btn #64b5f6 blue darken-1">
                                 <span>Update Profile Picture</span>
 
-                                <input type="file" ref={inputImageFile} onChange={(e) => {
+                                <input type="file"  onChange={(e) => {
                                     e.preventDefault()
-                                    updateProfilePic(e.target.files[0])
+                                    //updateProfilePic(e.target.files[0])
                                 }} />
                             </div>
-                            <div className="file-path-wrapper">
-                                <input className="file-path validate" ref={inputImageName} type="text" placeholder="Upload you image" />
+                            <div className="file-path-wrapper input-field">
+                                <input className="file-path validate" type="text" />
                             </div>
 
                             {uploadPercentage > 0 &&
@@ -189,8 +186,6 @@ const Profile = () => {
 	                                </div>
                                 </div>
                             }
-
-
                         </div>
 
                     </div>

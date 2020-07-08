@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react'
 import io from 'socket.io-client';
 
-import makeToast from './Toaster'
+
 
 
 const WebSocketContext = createContext(null)
@@ -26,11 +26,11 @@ export default ({ children }) => {
             newSocket.on("disconnect", () => {
                 setSocket(null)
                 setTimeout(setupSocket, 100)
-                makeToast("error", "Socket Disconnected")
+                //makeToast("error", "Socket Disconnected")
             })
 
             newSocket.on("connect", ()=>{
-                makeToast("success", "Socket Connected!!!")
+               // makeToast("success", "Socket Connected!!!")
                 console.log(newSocket)
 
             })
