@@ -14,8 +14,23 @@ import ChatDashboard from './components/screens/ChatDashboard'
 import ChatRoomPage from './components/screens/ChatRoomPage'
 import { reducer, initialState } from './reducers/userReducer'
 
-
 export const userContext = createContext()
+
+
+
+
+
+const AuthRoute = ({ loggedIn, path, component: Component }) => (
+    <Route
+      path={path}
+      render={props => (
+        loggedIn ?
+        <Redirect to='/' /> :
+        <Component {...props} />
+      )}
+    />
+  );
+  
 
 
 const Routing = (props) => {
@@ -47,7 +62,7 @@ const Routing = (props) => {
                 <Home />
             </Route>
 
-            <Route exact path="/signin" >
+            {/* <Route exact path="/signin" >
                 {(state && location.pathname == "/signin")
                     ? history.push('/')
                     : <SignIn />}
@@ -59,7 +74,11 @@ const Routing = (props) => {
                 {(state && location.pathname == "/signup")
                     ? history.push('/')
                     : <SignUp />}
-            </Route>
+            </Route> */}
+
+
+            <AuthRoute loggedIn={state} path="/signin" component={SignIn} />
+            <AuthRoute loggedIn={state} path="/signup" component={SignUp} />
 
             <Route exact path="/profile" >
                 <Profile />
@@ -91,18 +110,17 @@ const Routing = (props) => {
 
 function App() {
     const [state, dispatch] = useReducer(reducer, initialState)
-    
+
     return (
         <userContext.Provider value={{ state, dispatch }}>
             <WebSocketProvider >
 
                 <BrowserRouter>
                     <NavBar />
-                    <Routing  />
+                    <Routing />
                 </BrowserRouter>
 
             </WebSocketProvider>
-
 
         </userContext.Provider>
 
