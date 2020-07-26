@@ -91,8 +91,11 @@ const Profile = () => {
     }, [image])
 
 
-    const updateProfilePic = (file) => {
-        setImage(file)
+    const updateProfilePic = (e) => {
+        setImage(e.target.files[0])
+
+        e.target.value = null;
+
 
     }
 
@@ -170,9 +173,11 @@ const Profile = () => {
                             <div className="btn #64b5f6 blue darken-1">
                                 <span>Update Profile Picture</span>
 
-                                <input type="file"  onChange={(e) => {
+                                <input type="file" onChange={(e) => {
                                     e.preventDefault()
                                     //updateProfilePic(e.target.files[0])
+                                    updateProfilePic(e)
+                                    
                                 }} />
                             </div>
                             <div className="file-path-wrapper input-field">
@@ -187,6 +192,12 @@ const Profile = () => {
                                 </div>
                             }
                         </div>
+
+
+
+
+
+
 
                     </div>
                     <div className="gallery">

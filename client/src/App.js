@@ -16,10 +16,6 @@ import { reducer, initialState } from './reducers/userReducer'
 
 export const userContext = createContext()
 
-
-
-
-
 const AuthRoute = ({ loggedIn, path, component: Component }) => (
     <Route
       path={path}
