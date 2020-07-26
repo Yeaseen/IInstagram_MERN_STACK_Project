@@ -2,7 +2,7 @@ const express = require('express')
 
 const app = express()
 const mongoose = require('mongoose')
-const PORT = 5000
+const PORT = process.env.PORT || 5000
 
 const fileUpload = require('express-fileupload');
 
@@ -41,6 +41,13 @@ app.use(require('./routes/user'))
 app.use(require('./routes/chat'))
 
 
+if(process.env.NODE_ENV=="production"){
+    app.use(express.static('client/build'))
+    const path = require('path')
+    app.get("*",(req,res)=>{
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'))
+    })
+}
 
 
 const server = app.listen(PORT, () => {
@@ -50,7 +57,7 @@ const server = app.listen(PORT, () => {
 
 const io = require('socket.io')(server)
 const jwt = require('jsonwebtoken')
-require("dotenv").config()
+
 
 const Message = mongoose.model("Message")
 const User = mongoose.model("User")
