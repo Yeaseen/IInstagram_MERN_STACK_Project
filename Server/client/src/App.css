@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap');
+
+a {
+    color: black !important;
+}
+
+.brand-logo,h2 {
+    font-family: 'Grand Hotel', cursive;
+}
+
+.mycard {
+    margin-top: 30px;
+}
+
+.auth-card {
+    padding: 20px;
+    text-align: center;
+    max-width: 400px;
+    margin: 10px auto;
+}
+
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid rgb(8, 93, 252) !important;
+    box-shadow: 0 1px 0 0 rgb(8, 93, 252) !important;
+}
+
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid rgb(8, 93, 252) !important;
+    box-shadow: 0 1px 0 0 rgb(8, 93, 252) !important;
+}
+
+
+.progress {
+	background-color: #d8d8d8;
+	border-radius: 20px;
+	position: relative;
+	margin: 15px 0;
+	height: 30px;
+  width: 645px;
+}
+
+.progress-done {
+	background: linear-gradient(to left, #FF9472, #94d3f7 );
+	box-shadow: 0 3px 3px -5px #F2709C, 0 2px 5px #F2709C;
+  border-radius: 20px;
+	color: rgb(10, 0, 0);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 0;
+	opacity: 0;
+	transition: 1s ease 0.3s;
+}
+.gallery{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+}
+
+.gallery-content{
+  display:inline-block;
+  padding: 30px;
+  position: relative;
+}
+.gallery-content img{
+  transition: 1s;
+  width: 250px;
+  height: 250px;
+}
+
+.gallery-content img:hover{
+  filter: grayscale(100%);
+  transform: scale(1.05);
+}
+
+.gallery-content .material-icons{
+  position: absolute;
+  top: 0;
+  right: 50%;
+  left: auto;
+}
+
+
+.item{
+    width: 30%;
+
+}
+
+.home-card{
+    max-width: 500px;
+    height: max-content;
+    margin: 50px auto;
+    
+}
+
+.Post-user {
+  display: flex;
+  padding: 4px;
+  align-items: center;
+}
+.Post-user-avatar {
+  width: 30px;
+  height: 30px;
+}
+.Post-user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.Post-user-nickname {
+  margin-left: 12px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: bold;
+  justify-content: space-around;
+}
+
+.Comment-user {
+  display: flex;
+  padding: 2px;
+  height: auto;
+}
+.Comment-user-avatar {
+  width: 30px;
+  height: 30px;
+}
+.Comment-user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.Comment-user-nickname {
+  margin-left: 12px;
+ 
+}
+
+
+
+
+
+
+#toast-container{
+    top: 60px !important;
+    right: 20px !important;
+    left: auto !important;
+}
+
+.material-icons:hover{
+    cursor: pointer;
+
+}
+
+.chatcard {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    padding: 1rem;
+    position: relative;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 25vw;
+    transform: translate(-50%, -50%);
+  }
+  
+  .chatcardHeader {
+    background: #1686f0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    transform: skewY(-4deg);
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    top: -1rem;
+    left: -0.75rem;
+  }
+  
+  .chatcardBody {
+    margin-top: 2rem;
+  }
+
+  .chatinputGroup {
+    margin-bottom: 1rem;
+  }
+
+
+
+  .chatlabel {
+    font-size: 0.9rem;
+    color: black;
+  }
+  
+  .chatinput {
+    border: none;
+    padding: 0.5rem 0.1rem;
+    width: 100%;
+    border-radius: 2px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.5s;
+  }
+  
+  .chatinput:focus {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .chatbutton {
+    background: #1686f0;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    width: 100%;
+    text-transform: uppercase;
+  }
+  
+  .chatrooms {
+    margin-top: 1rem;
+  }
+  
+  .chatroom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .join {
+    background: #1686f0;
+    padding: 0.25rem 1rem;
+    border-radius: 2px;
+  }
+
+
+  
+  .chatroomPage {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    margin: -8px;
+  }
+  
+  .chatroomSection {
+    width: 40vw;
+    height: 80vh;
+    margin: auto;
+    border: 1px solid #eee;
+    position: relative;
+  }
+  
+  .chatroomContent {
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    right: 0;
+    bottom: 3.5rem;
+    padding: 0.5rem;
+    overflow: auto;
+  }
+  
+  .chatroomActions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 72px;
+    grid-gap: 1rem;
+    border-top: 1px solid #eee;
+  }
+  
+  .chatroomActions button {
+    height: 100%;
+  }
+  
+  .message {
+    margin-bottom: 0.25rem;
+  }
+  
+  .otherMessage {
+    color: #0099cc;
+    font-weight: bold;
+  }
+  
+  .ownMessage {
+    color: #00cc00;
+    font-weight: bold;
+  }
