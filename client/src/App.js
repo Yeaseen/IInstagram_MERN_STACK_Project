@@ -31,7 +31,7 @@ const AuthRoute = ({ loggedIn, path, component: Component }) => (
 
 const Routing = (props) => {
     const history = useHistory()
-    const location = useLocation()
+    //const location = useLocation()
     const { state, dispatch } = useContext(userContext)
 
     //ustate = state
@@ -109,7 +109,7 @@ function App() {
 
     return (
         <userContext.Provider value={{ state, dispatch }}>
-            <WebSocketProvider >
+            <WebSocketProvider  >
 
                 <BrowserRouter>
                     <NavBar />
