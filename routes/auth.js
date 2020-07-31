@@ -129,10 +129,12 @@ router.post('/reset-password', (req, res) => {
                         subject: 'Password Reset',
                         html: `
                         <p>You have requested for password reset</p>
-                        <h5>click in this <a href="http://localhost:3000/reset/${token}">link</a> to reset password</h5>
+                        <h5>click in this <a href="http://127.0.0.1:3000/reset/${token}">link</a> to reset password</h5>
                         `
                     }
                     sgMail.send(msg)
+
+                    res.json({message: "check your mail"})
                 })
             })
     })

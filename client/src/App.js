@@ -10,6 +10,7 @@ import SignUp from './components/screens/Signup'
 import CreatePost from './components/screens/CreatePost'
 import UserProfile from './components/screens/UserProfile'
 import SubscribedUserPosts from './components/screens/SubscribeUserPosts'
+import Reset from './components/screens/Reset'
 import ChatDashboard from './components/screens/ChatDashboard'
 import ChatRoomPage from './components/screens/ChatRoomPage'
 import { reducer, initialState } from './reducers/userReducer'
@@ -18,35 +19,34 @@ export const userContext = createContext()
 
 const AuthRoute = ({ loggedIn, path, component: Component }) => (
     <Route
-      path={path}
-      render={props => (
-        loggedIn ?
-        <Redirect to='/' /> :
-        <Component {...props} />
-      )}
+        path={path}
+        render={props => (
+            loggedIn ?
+                <Redirect to='/' /> :
+                <Component {...props} />
+        )}
     />
-  );
-  
+);
+
 
 
 const Routing = (props) => {
     const history = useHistory()
-    //const location = useLocation()
+
     const { state, dispatch } = useContext(userContext)
 
     //ustate = state
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"))
-        //console.log(typeof(user),user)
-        //console.log(location.pathname);
+
         if (user) {
             dispatch({ type: "USER", payload: user })
 
         }
         else {
-            history.push('/signin')
-            //console.log(location.pathname);
-            //{(state && location.pathname=="/signin")?history.push('/'):<SignIn />}
+            if (!history.location.pathname.startsWith('/reset')) {
+                history.push('/signin')
+            }
         }
 
     }, [])
@@ -91,6 +91,11 @@ const Routing = (props) => {
             <Route exact path="/myfollowingposts" >
                 <SubscribedUserPosts />
             </Route>
+
+            <Route exact path="/reset" >
+                <Reset />
+            </Route>
+
 
             <Route exact path="/chatdashboard" >
                 <ChatDashboard />
