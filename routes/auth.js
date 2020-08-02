@@ -9,18 +9,7 @@ const jwt = require('jsonwebtoken')
 
 require("dotenv").config()
 const requireLogin = require('../middleWare/requireLogin')
-// const nodemailer = require('nodemailer')
-// const sendgridTransport = require('nodemailer-sendgrid-transport')
 
-
-
-// const transporter = nodemailer.createTransport(sendgridTransport({
-//     auth:{
-//         api_user: process.env.SENDGRID_API_USER,    
-//         api_key: process.env.SENDGRID_API_PASSWORD, 
-//         //api_key: process.env.SENDGRID_API_KEY
-//     },
-// }))
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -129,7 +118,7 @@ router.post('/reset-password', (req, res) => {
                         subject: 'Password Reset',
                         html: `
                         <p>You have requested for password reset</p>
-                        <h5>click in this <a href="http://127.0.0.1:3000/reset/${token}">link</a> to reset password</h5>
+                        <h5>click in this <a href="${process.env.HOSTEDLOCALHOST}/reset/${token}">link</a> to reset password</h5>
                         `
                     }
                     sgMail.send(msg)

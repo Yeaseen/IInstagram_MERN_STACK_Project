@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { userContext } from '../../App'
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 const Home = () => {
     const [data, setData] = useState([])
     const { state, dispatch } = useContext(userContext)
@@ -211,6 +212,8 @@ const Home = () => {
                                     <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
                                         <span>{item.postedBy.name}</span>
                                     </Link>
+                                    <br></br>
+                                    <span style={{fontSize:"12px", fontWeight:"normal"}}> created at {moment(item.createdAt).format("L LTS")}</span>
                                     {item.postedBy._id == state._id
 
                                         && <i className="material-icons"
