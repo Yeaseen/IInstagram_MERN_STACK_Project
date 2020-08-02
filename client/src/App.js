@@ -11,6 +11,7 @@ import CreatePost from './components/screens/CreatePost'
 import UserProfile from './components/screens/UserProfile'
 import SubscribedUserPosts from './components/screens/SubscribeUserPosts'
 import Reset from './components/screens/Reset'
+import NewPassword from './components/screens/NewPassword'
 import ChatDashboard from './components/screens/ChatDashboard'
 import ChatRoomPage from './components/screens/ChatRoomPage'
 import { reducer, initialState } from './reducers/userReducer'
@@ -94,6 +95,10 @@ const Routing = (props) => {
 
             <Route exact path="/reset" >
                 <Reset />
+            </Route>
+
+            <Route path="/reset/:token" >
+                <NewPassword />
             </Route>
 
 

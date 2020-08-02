@@ -134,9 +134,37 @@ router.post('/reset-password', (req, res) => {
                     }
                     sgMail.send(msg)
 
-                    res.json({message: "check your mail"})
+                    res.json({ message: "check your mail" })
                 })
             })
     })
 })
+
+router.post('/new-password', (req, res) => {
+    const newPassword = req.body.password
+    const sentToken = req.body.token
+
+    User.findOne({ resetToken: sentToken, expireToken: { $gt: Date.now() } })
+        .then(user => {
+            if (!user) {
+                return res.status(422).json({ error: "Try again! Session may expired" })
+            }
+
+            bcrypt.hash(newPassword, 12).then(hashedpassword => {
+                user.password = hashedpassword
+                user.resetToken = undefined
+                user.expireToken = undefined
+                user.markModified('password')
+                user.markModified('resetToken')
+                user.markModified('expireToken')
+                user.save().then((saveduser) => {
+                    res.json({ message: "password updated successfully" })
+                })
+            })
+
+        }).catch(err => {
+            console.log(err)
+        })
+})
+
 module.exports = router
