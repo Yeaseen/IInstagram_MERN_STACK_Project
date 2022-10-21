@@ -4,6 +4,7 @@
   "description": "",
   "engines": {
     "node": "14.x",
+    "npm": "*"
   },
   "main": "app.js",
   "scripts": {
