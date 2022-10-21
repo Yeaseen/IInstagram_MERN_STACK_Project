@@ -14,6 +14,7 @@ require("dotenv").config()
 
 mongoose.connect(process.env.MONGOURI, {
 	useNewUrlParser: true,
+	
 	useUnifiedTopology: true
 })
 mongoose.connection.on('connected', () => {
